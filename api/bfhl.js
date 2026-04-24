@@ -1,4 +1,4 @@
-const { parseInput, buildGroups, buildTree } = require('../utils/tree');
+const { parseInput, buildGroups, buildTree } = require('../backend/utils/tree');
 
 const USER_ID = 'mohan_04062006';
 const EMAIL_ID = 'mv5273@srmist.edu.in';
@@ -12,10 +12,7 @@ function formatResponse({ validEdges, invalidEntries, duplicateEdges }) {
 
     for (const groupNodes of groups) {
       const result = buildTree(groupNodes, validEdges);
-      const entry = {
-        root: result.root,
-        tree: result.tree,
-      };
+      const entry = { root: result.root, tree: result.tree };
       if (result.hasCycle) {
         entry.has_cycle = true;
       } else {
@@ -56,18 +53,23 @@ function formatResponse({ validEdges, invalidEntries, duplicateEdges }) {
   };
 }
 
-function handleAnalyze(req, res) {
+module.exports = async function handler(req, res) {
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+
   const { data } = req.body;
   if (!Array.isArray(data)) {
-    return res.status(400).json({ error: 'data must be an array' });
+    res.status(400).json({ error: 'data must be an array' });
+    return;
   }
 
   const parsed = parseInput(data);
-  res.json(formatResponse(parsed));
-}
-
-function handleHealthCheck(req, res) {
-  res.json({ status: 'ok', message: 'BFHL API is up. Use POST /bfhl.' });
-}
-
-module.exports = { handleAnalyze, handleHealthCheck, formatResponse };
+  res.status(200).json(formatResponse(parsed));
+};

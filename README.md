@@ -65,6 +65,27 @@ Then start the backend to serve the built frontend:
 npm start
 ```
 
+## Vercel Deployment
+
+This repository is configured for Vercel deployment with a root `vercel.json` file.
+
+- The frontend is built from `frontend/package.json` and served from `frontend/dist`.
+- The backend API is exposed as a serverless function at `/api/bfhl` using `api/bfhl.js`.
+
+To deploy manually, install the Vercel CLI and run:
+
+```bash
+npm install -g vercel
+vercel login
+vercel --prod
+```
+
+If you want to use a different API endpoint during local frontend development, add a `.env` file in `frontend`:
+
+```
+VITE_API_URL=http://localhost:3001/bfhl
+```
+
 ## API Reference
 
 ### `POST /bfhl`

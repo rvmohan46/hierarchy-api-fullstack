@@ -10,8 +10,9 @@ export default function App() {
 
   const handleAnalyze = async () => {
     setIsLoading(true);
+    const apiUrl = import.meta.env.VITE_API_URL || '/api/bfhl';
     try {
-      const response = await fetch('http://localhost:3001/bfhl', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data: input.split(/[\n,]+/).map((item) => item.trim()).filter(Boolean) }),

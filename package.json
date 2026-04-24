@@ -1,0 +1,13 @@
+{
+  "name": "bfhl-fullstack",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "start": "npm --workspace backend start",
+    "dev:backend": "npm --workspace backend run dev",
+    "dev:frontend": "npm --workspace frontend run dev"
+  }
+}
